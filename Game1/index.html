@@ -119,7 +119,7 @@
         // 3. 生成障礙物 🚧 (修正：速度調慢)
         if(Math.random() < 0.02) obstacles.push({x: 50 + Math.random()*460, y: -50});
         obstacles.forEach((o, i) => {
-            o.y += 2.5; // 從原本的 4 調降為 2.5，更有緩衝感
+            o.y += 2.0; // 從原本的 4 調降為 2.5，更有緩衝感
             drawEmoji("🚧", o.x, o.y, 40);
             if(Math.abs(carX - o.x) < 40 && Math.abs(340 - o.y) < 40) {
                 sound.no(); obstacles.splice(i, 1);
