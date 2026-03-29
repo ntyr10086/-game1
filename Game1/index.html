@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>開車挑戰-</title>
+    <title>開車挑戰</title>
     <style>
         /* --- 奶油可愛風 CSS --- */
         body {
@@ -50,8 +50,8 @@
 <div id="game-container">
     <div id="start-screen">
         <h1>開車挑戰 🚗</h1>
-        <p style="color:#666; font-size: 18px;">準備好幫父母完成掃墓任務了嗎？<br>集滿 10 個元寶就過關！</p>
-        <button onclick="startGame()">立刻出發！</button>
+        <p style="color:#666; font-size: 18px;">障礙物已經減速囉！<br>集滿 10 個元寶就過關！</p>
+        <button onclick="startGame()">開始冒險</button>
     </div>
 
     <div id="game-stage" style="display:none;">
@@ -99,16 +99,14 @@
     }
 
     function drawEmoji(emoji, x, y, size) {
-        ctx.font = `${size}px serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
+        ctx.font = `${size}px serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
         ctx.fillText(emoji, x, y);
     }
 
     function gameLoop() {
         if(isGameOver) return;
 
-        // 1. 畫背景 (簡易馬路)
+        // 1. 畫背景
         ctx.fillStyle = "#e8f5e9"; ctx.fillRect(0,0,560,400);
         ctx.strokeStyle = "white"; ctx.setLineDash([20, 20]);
         ctx.beginPath(); ctx.moveTo(280, 0); ctx.lineTo(280, 400); ctx.stroke();
@@ -118,27 +116,25 @@
         if(keys.ArrowRight && carX < 510) carX += 7;
         drawEmoji("🚗", carX, 340, 50);
 
-        // 3. 生成障礙物 🚧
+        // 3. 生成障礙物 🚧 (修正：速度調慢)
         if(Math.random() < 0.02) obstacles.push({x: 50 + Math.random()*460, y: -50});
         obstacles.forEach((o, i) => {
-            o.y += 4;
+            o.y += 2.5; // 從原本的 4 調降為 2.5，更有緩衝感
             drawEmoji("🚧", o.x, o.y, 40);
             if(Math.abs(carX - o.x) < 40 && Math.abs(340 - o.y) < 40) {
-                sound.no();
-                obstacles.splice(i, 1);
+                sound.no(); obstacles.splice(i, 1);
                 coinsCollected = Math.max(0, coinsCollected - 1);
                 document.getElementById("coin-count").innerText = coinsCollected;
             } else if(o.y > 450) obstacles.splice(i, 1);
         });
 
-        // 4. 生成元寶 🪙
+        // 4. 生成元寶 🪙 (修正：速度調慢)
         if(Math.random() < 0.015) coinItems.push({x: 50 + Math.random()*460, y: -50});
         coinItems.forEach((c, i) => {
-            c.y += 3;
+            c.y += 2.0; // 從原本的 3 調降為 2.0
             drawEmoji("🪙", c.x, c.y, 35);
             if(Math.abs(carX - c.x) < 40 && Math.abs(340 - c.y) < 40) {
-                sound.ok();
-                coinItems.splice(i, 1);
+                sound.ok(); coinItems.splice(i, 1);
                 coinsCollected++;
                 document.getElementById("coin-count").innerText = coinsCollected;
                 if(coinsCollected >= 10) endGame();
@@ -149,11 +145,9 @@
     }
 
     function endGame() {
-        isGameOver = true;
-        sound.win();
+        isGameOver = true; sound.win();
         document.getElementById("game-stage").style.display = "none";
         document.getElementById("end-screen").style.display = "block";
-        // 這裡不再呼叫 saveScore()
     }
 </script>
 
