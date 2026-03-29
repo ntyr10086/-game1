@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <title>清明開車挑戰</title>
+    <title>開車挑戰-</title>
     <style>
         /* --- 奶油可愛風 CSS --- */
         body {
@@ -18,7 +18,11 @@
         }
 
         h1 { color: #6ab04c; font-size: 32px; margin-bottom: 10px; }
-        #story-text { background: #f1f8e9; padding: 15px; border-radius: 20px; color: #2e7d32; font-weight: bold; margin-bottom: 15px; }
+        #story-text { 
+            background: #f1f8e9; padding: 15px; border-radius: 20px; 
+            color: #2e7d32; font-weight: bold; margin-bottom: 15px; 
+            font-size: 18px;
+        }
         
         canvas { 
             border-radius: 30px; background: #fff; 
@@ -26,7 +30,6 @@
             border: 5px solid #eee;
         }
 
-        /* 像果凍一樣的按鈕 */
         button {
             padding: 15px 50px; font-size: 22px; font-weight: bold;
             background: linear-gradient(to bottom, #badc58, #6ab04c);
@@ -40,9 +43,6 @@
             color: white; padding: 10px 45px; border-radius: 50px; 
             display: inline-block; font-weight: bold; 
         }
-
-        #leaderboard { list-style: none; padding: 0; margin-top: 15px; text-align: left; }
-        #leaderboard li { background: #fafafa; margin: 8px 0; padding: 12px 20px; border-radius: 15px; display: flex; justify-content: space-between; border: 1px solid #eee; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -62,10 +62,8 @@
     </div>
 
     <div id="end-screen" style="display:none;">
-        <h2 style="color:#6ab04c; font-size: 32px;">🎉 抵達目的地！</h2>
-        <p style="font-size: 20px; font-weight: bold; color: #444;">大山，妳成功收集了 10 個元寶並抵達墓園！</p>
-        <h3 style="color:#ffa000;">🏆 抵達紀錄</h3>
-        <ul id="leaderboard"></ul>
+        <h2 style="color:#6ab04c; font-size: 36px;">🎉 抵達目的地！</h2>
+        <p style="font-size: 22px; font-weight: bold; color: #444;">你成功收集了 10 個元寶並抵達墓園！<br>(｡◕∀◕｡)b</p>
         <button onclick="location.reload()">再玩一次</button>
     </div>
 </div>
@@ -85,7 +83,7 @@
     };
 
     // --- 🎮 遊戲變數 ---
-    let userName = "大山", coinsCollected = 0, isGameOver = false; // 這裡預設為大山
+    let coinsCollected = 0, isGameOver = false;
     const canvas = document.getElementById("gameCanvas"), ctx = canvas.getContext("2d");
     let keys = { ArrowLeft: false, ArrowRight: false };
     let carX = 280, obstacles = [], coinItems = [];
@@ -155,18 +153,7 @@
         sound.win();
         document.getElementById("game-stage").style.display = "none";
         document.getElementById("end-screen").style.display = "block";
-        saveScore();
-    }
-
-    function saveScore() {
-        let history = JSON.parse(localStorage.getItem("q_car_fast")) || [];
-        history.push({ d: new Date().toLocaleTimeString() });
-        localStorage.setItem("q_car_fast", JSON.stringify(history.slice(-5)));
-        let list = "";
-        history.slice(-5).reverse().forEach((e, i) => {
-            list += `<li><span>第 ${history.length - i} 次挑戰</span><span>✅ 抵達成功 (${e.d})</span></li>`;
-        });
-        document.getElementById("leaderboard").innerHTML = list;
+        // 這裡不再呼叫 saveScore()
     }
 </script>
 
